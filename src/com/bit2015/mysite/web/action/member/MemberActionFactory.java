@@ -20,6 +20,8 @@ public class MemberActionFactory extends ActionFactory {
 			action = new LoginFormAction();
 		else if("login".equals(actionName))
 			action = new LoginAction();
+		else if("logout".equals(actionName))
+			action = new LogOutAction();
 		else
 			action = new IndexAction();
 		return action;

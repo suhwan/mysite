@@ -1,4 +1,13 @@
+<%@page import="com.bit2015.mysite.vo.GuestBookVo"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%
+	
+	List<GuestBookVo> list = (List<GuestBookVo>)request.getAttribute("list");
+%>
 <!doctype html>
 <html>
 <head>
@@ -8,19 +17,12 @@
 </head>
 <body>
 	<div id="container">
-		<div id="header">
-			<h1>MySite</h1>
-			<ul>
-				<li><a href="">로그인</a><li>
-				<li><a href="">회원가입</a><li>
-				<li><a href="">회원정보수정</a><li>
-				<li><a href="">로그아웃</a><li>
-				<li>님 안녕하세요 ^^;</li>
-			</ul>
-		</div>
+	
+		<c:import url="/views/include/header.jsp"/>
+		
 		<div id="content">
 			<div id="guestbook">
-				<form action="/mysite/guestbook" method="post">
+				<form action="/mysite/guest" method="post">
 					<input type="hidden" name="a" value="insert">
 					<table>
 						<tr>
@@ -37,35 +39,37 @@
 				</form>
 				<ul>
 					<li>
-						<table>
+						<%
+						int countTotal =list.size();
+						int index = 0;
+						for(GuestBookVo vo : list){ %>
+						<table width=510 border=1>
 							<tr>
-								<td>[4]</td>
-								<td>안대혁</td>
-								<td>2015-11-10 11:22:30</td>
-								<td><a href="">삭제</a></td>
-							</tr>
-							<tr>
-								<td colspan=4>
-								안녕하세요. ^^;<br>
-								하하하하	
+								<td><%= countTotal-index++ %></td>
+								<td><%= vo.getName() %></td>
+								<td><%= vo.getRegDate() %></td>
+								<td>
+								<form action="/mysite/guest" method="post">
+									<input type="hidden" name="a" value="deleteform">
+									<input type="hidden" name="no" value="<%= vo.getNo() %>">
+									<input type="submit" value="삭제">
+								</form>
 								</td>
 							</tr>
+							<tr>
+								<td colspan=4><%= vo.getMessage().replaceAll("\n",	"<br>") %></td>
+							</tr>
 						</table>
+						<% } %>
 						<br>
 					</li>
 				</ul>
 			</div>
 		</div>
-		<div id="navigation">
-			<ul>
-				<li><a href="">안대혁</a></li>
-				<li><a href="">방명록</a></li>
-				<li><a href="">게시판</a></li>
-			</ul>
-		</div>
-		<div id="footer">
-			<p>(c)opyright 2014 </p>
-		</div>
+		
+		<c:import url="/views/include/navigation.jsp"/>
+		<c:import url="/views/include/footer.jsp"/>
+		
 	</div>
 </body>
 </html>

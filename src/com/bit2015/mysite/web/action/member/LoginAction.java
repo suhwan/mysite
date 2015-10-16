@@ -8,7 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
 
 import com.bit2015.mysite.dao.MemberDao;
 import com.bit2015.mysite.vo.MemberVo;
@@ -29,14 +28,18 @@ public class LoginAction implements Action {
 			
 			if(vo == null)
 			{
-				WebUtil.redirect(response, "mysite/member?a=loginform");
+				//실패처리1
+				//WebUtil.forwarding(request, response, "/views/user/loginform_error.jsp");
+				//실패처리2
+				WebUtil.redirect(response, "/mysite/member?a=loginform&result=error");
 				return;
 			}
 			
 			// 로그인처리 
 			HttpSession session =  request.getSession(true);
+			//세션에 vo 객체 저장 
 			session.setAttribute("authUser", vo);
-			
+		
 			//mian redirection
 			WebUtil.redirect(response, "/mysite/main");
 	}
